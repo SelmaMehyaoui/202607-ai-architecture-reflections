@@ -18,6 +18,10 @@ The recent evolution of Artificial Intelligence is often described through the r
 
 Available in the `paper/` directory.
 
+## Acknowledgements
+
+Many thanks to the colleagues and friends who kindly reviewed early drafts and provided thoughtful comments that helped improve the essay.
+
 ## Status
 
 Version 1.0
