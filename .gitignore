@@ -1,0 +1,4 @@
+*_wip/*
+*.venv*
+*.DS_Store
+.vscode/
