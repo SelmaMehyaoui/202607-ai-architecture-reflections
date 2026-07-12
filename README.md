@@ -1,6 +1,5 @@
 # Language, Knowledge and Action
-
-*A short essay on AI architectures.*
+# _A short essay on AI architectures._
 
 This essay explores a simple idea:
 
@@ -16,7 +15,7 @@ The recent evolution of Artificial Intelligence is often described through the r
 
 📄 **Language, Knowledge and Action – Reflections on AI Architectures**
 
-Available in the `paper/` directory.
+The pdf is available in the `paper/` directory.
 
 ## Acknowledgements
 
