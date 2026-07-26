@@ -1,0 +1,868 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Results from the execution-boundary architecture experiment run on Selma's Mac on 26 July 2026.">
+  <title>Execution Boundaries - Results, 26 July 2026</title>
+  <style>
+    :root {
+      --ink: #172033;
+      --muted: #657086;
+      --line: rgba(100, 116, 139, .22);
+      --paper: rgba(255, 255, 255, .84);
+      --rose: #be185d;
+      --rose-soft: #fce7f3;
+      --blue: #2563eb;
+      --blue-soft: #dbeafe;
+      --orange: #ea580c;
+      --orange-soft: #ffedd5;
+      --violet: #7c3aed;
+      --violet-soft: #ede9fe;
+      --green: #15803d;
+      --green-soft: #dcfce7;
+      --red: #b91c1c;
+      --red-soft: #fee2e2;
+      --shadow: 0 24px 70px rgba(30, 41, 59, .11);
+    }
+
+    * { box-sizing: border-box; }
+
+    html {
+      scroll-behavior: smooth;
+      background: #f8fafc;
+    }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+        "Segoe UI", sans-serif;
+      line-height: 1.55;
+      background:
+        radial-gradient(circle at 4% 2%, rgba(252, 231, 243, .9), transparent 27rem),
+        radial-gradient(circle at 96% 14%, rgba(219, 234, 254, .9), transparent 30rem),
+        linear-gradient(180deg, #fff 0, #f8fafc 36rem);
+    }
+
+    a { color: var(--blue); text-underline-offset: 3px; }
+    code, .mono { font-family: "SFMono-Regular", Consolas, monospace; }
+
+    .shell {
+      width: min(1180px, calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      padding: 72px 0 48px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      gap: 9px;
+      align-items: center;
+      padding: 7px 12px;
+      color: #831843;
+      border: 1px solid rgba(190, 24, 93, .2);
+      border-radius: 999px;
+      background: rgba(252, 231, 243, .76);
+      font-size: .78rem;
+      font-weight: 800;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .eyebrow::before {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--rose);
+      content: "";
+      box-shadow: 0 0 0 5px rgba(190, 24, 93, .1);
+    }
+
+    h1 {
+      max-width: 900px;
+      margin: 22px 0 16px;
+      font-size: clamp(2.6rem, 7vw, 5.8rem);
+      line-height: .98;
+      letter-spacing: -.06em;
+    }
+
+    .lede {
+      max-width: 780px;
+      margin: 0;
+      color: #475569;
+      font-size: clamp(1.05rem, 2vw, 1.35rem);
+    }
+
+    .hero-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px 20px;
+      margin-top: 28px;
+      color: var(--muted);
+      font-size: .88rem;
+    }
+
+    .hero-meta span { white-space: nowrap; }
+
+    nav {
+      position: sticky;
+      z-index: 10;
+      top: 0;
+      border-block: 1px solid rgba(148, 163, 184, .18);
+      background: rgba(248, 250, 252, .82);
+      backdrop-filter: blur(18px);
+    }
+
+    nav .shell {
+      display: flex;
+      gap: 4px;
+      overflow-x: auto;
+      padding-block: 9px;
+      scrollbar-width: none;
+    }
+
+    nav a {
+      flex: 0 0 auto;
+      padding: 8px 11px;
+      color: #475569;
+      border-radius: 10px;
+      font-size: .82rem;
+      font-weight: 750;
+      text-decoration: none;
+    }
+
+    nav a:hover, nav a:focus-visible {
+      color: var(--ink);
+      background: #fff;
+      outline: none;
+      box-shadow: 0 4px 18px rgba(15, 23, 42, .07);
+    }
+
+    main { padding: 48px 0 90px; }
+    section { scroll-margin-top: 76px; margin-top: 68px; }
+
+    .section-kicker {
+      margin: 0 0 8px;
+      color: var(--rose);
+      font-size: .76rem;
+      font-weight: 850;
+      letter-spacing: .11em;
+      text-transform: uppercase;
+    }
+
+    h2 {
+      margin: 0 0 12px;
+      font-size: clamp(1.8rem, 4vw, 3.15rem);
+      line-height: 1.05;
+      letter-spacing: -.045em;
+    }
+
+    h3 { margin: 0 0 10px; line-height: 1.2; }
+    .section-intro { max-width: 780px; margin: 0 0 28px; color: var(--muted); }
+
+    .grid { display: grid; gap: 18px; }
+    .grid-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .grid-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+    .card {
+      padding: 22px;
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      background: var(--paper);
+      box-shadow: 0 12px 40px rgba(30, 41, 59, .055);
+      backdrop-filter: blur(12px);
+    }
+
+    .metric {
+      position: relative;
+      min-height: 168px;
+      overflow: hidden;
+    }
+
+    .metric::after {
+      position: absolute;
+      right: -32px;
+      bottom: -42px;
+      width: 125px;
+      height: 125px;
+      border-radius: 50%;
+      background: var(--accent-soft);
+      content: "";
+      opacity: .75;
+    }
+
+    .metric .label {
+      position: relative;
+      z-index: 1;
+      color: var(--muted);
+      font-size: .77rem;
+      font-weight: 800;
+      letter-spacing: .055em;
+      text-transform: uppercase;
+    }
+
+    .metric strong {
+      position: relative;
+      z-index: 1;
+      display: block;
+      margin: 14px 0 5px;
+      color: var(--accent);
+      font-size: clamp(2rem, 4vw, 3rem);
+      line-height: 1;
+      letter-spacing: -.055em;
+    }
+
+    .metric p {
+      position: relative;
+      z-index: 1;
+      margin: 0;
+      color: #536076;
+      font-size: .9rem;
+    }
+
+    .rose { --accent: var(--rose); --accent-soft: var(--rose-soft); }
+    .blue { --accent: var(--blue); --accent-soft: var(--blue-soft); }
+    .orange { --accent: var(--orange); --accent-soft: var(--orange-soft); }
+    .violet { --accent: var(--violet); --accent-soft: var(--violet-soft); }
+
+    .callout {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 17px;
+      align-items: start;
+      margin-top: 22px;
+      padding: 20px 22px;
+      border: 1px solid rgba(124, 58, 237, .18);
+      border-radius: 20px;
+      background: linear-gradient(135deg, rgba(237, 233, 254, .8), rgba(255, 255, 255, .84));
+    }
+
+    .callout .mark {
+      display: grid;
+      width: 36px;
+      height: 36px;
+      place-items: center;
+      color: #fff;
+      border-radius: 11px;
+      background: var(--violet);
+      font-weight: 900;
+      box-shadow: 0 8px 20px rgba(124, 58, 237, .24);
+    }
+
+    .callout p { margin: 3px 0 0; }
+
+    .chart-card { padding: 26px; }
+    .chart-group + .chart-group { margin-top: 28px; }
+
+    .chart-heading {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: baseline;
+      margin-bottom: 14px;
+    }
+
+    .chart-heading h3 { margin: 0; }
+    .chart-heading span { color: var(--muted); font-size: .78rem; }
+
+    .bar-row {
+      display: grid;
+      grid-template-columns: 116px minmax(120px, 1fr) 82px;
+      gap: 13px;
+      align-items: center;
+      margin: 11px 0;
+    }
+
+    .bar-label { font-size: .86rem; font-weight: 750; }
+    .track {
+      height: 16px;
+      overflow: hidden;
+      border-radius: 999px;
+      background: #eef2f7;
+      box-shadow: inset 0 1px 2px rgba(15, 23, 42, .08);
+    }
+
+    .bar {
+      width: var(--width);
+      min-width: 5px;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--color), color-mix(in srgb, var(--color) 70%, white));
+      animation: reveal .8s ease-out both;
+      transform-origin: left;
+    }
+
+    @keyframes reveal {
+      from { transform: scaleX(0); opacity: .2; }
+      to { transform: scaleX(1); opacity: 1; }
+    }
+
+    .bar-value { text-align: right; font-variant-numeric: tabular-nums; font-size: .85rem; font-weight: 800; }
+
+    .table-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      background: rgba(255, 255, 255, .82);
+      box-shadow: 0 12px 40px rgba(30, 41, 59, .05);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: .87rem;
+      font-variant-numeric: tabular-nums;
+    }
+
+    th, td {
+      padding: 14px 16px;
+      border-bottom: 1px solid #e9edf3;
+      text-align: right;
+      white-space: nowrap;
+    }
+
+    th:first-child, td:first-child { text-align: left; }
+    th {
+      color: #526078;
+      background: rgba(248, 250, 252, .8);
+      font-size: .72rem;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+    }
+
+    tbody tr:last-child td { border-bottom: 0; }
+    tbody tr:hover { background: rgba(248, 250, 252, .8); }
+
+    .arch {
+      display: inline-flex;
+      gap: 8px;
+      align-items: center;
+      font-weight: 800;
+    }
+
+    .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--color); }
+
+    .finding {
+      border-top: 4px solid var(--accent);
+      background: linear-gradient(180deg, var(--accent-soft), rgba(255,255,255,.9) 44%);
+    }
+
+    .finding .tag {
+      color: var(--accent);
+      font-size: .72rem;
+      font-weight: 850;
+      letter-spacing: .07em;
+      text-transform: uppercase;
+    }
+
+    .finding p { margin-bottom: 0; color: #536076; font-size: .91rem; }
+
+    .matrix td:not(:first-child), .matrix th:not(:first-child) { text-align: center; }
+
+    .pill {
+      display: inline-flex;
+      min-width: 84px;
+      justify-content: center;
+      padding: 5px 9px;
+      border-radius: 999px;
+      font-size: .72rem;
+      font-weight: 850;
+    }
+
+    .allowed { color: #166534; background: var(--green-soft); }
+    .denied { color: #991b1b; background: var(--red-soft); }
+    .failed { color: #9a3412; background: var(--orange-soft); }
+    .observed { color: #1e40af; background: var(--blue-soft); }
+
+    .scope-note {
+      margin-top: 15px;
+      color: var(--muted);
+      font-size: .82rem;
+    }
+
+    .hypothesis {
+      display: grid;
+      grid-template-columns: 42px 1fr;
+      gap: 14px;
+      align-items: start;
+    }
+
+    .hypothesis .id {
+      display: grid;
+      width: 42px;
+      height: 42px;
+      place-items: center;
+      color: #4c1d95;
+      border-radius: 13px;
+      background: var(--violet-soft);
+      font-weight: 900;
+    }
+
+    .verdict {
+      display: inline-flex;
+      margin-top: 8px;
+      padding: 4px 8px;
+      border-radius: 7px;
+      color: #334155;
+      background: #eef2f7;
+      font-size: .69rem;
+      font-weight: 850;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+    }
+
+    .split {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      background: #fff;
+      box-shadow: var(--shadow);
+    }
+
+    .split > div { padding: 28px; }
+    .split > div + div { border-left: 1px solid var(--line); }
+    .split h3 { font-size: 1.15rem; }
+    .split ul { margin: 14px 0 0; padding-left: 20px; }
+    .split li + li { margin-top: 9px; }
+    .fact-side { background: linear-gradient(145deg, #eff6ff, #fff); }
+    .interpret-side { background: linear-gradient(145deg, #fff7ed, #fff); }
+
+    .environment dl {
+      display: grid;
+      grid-template-columns: minmax(150px, .7fr) 1.3fr;
+      gap: 10px 18px;
+      margin: 0;
+    }
+
+    dt { color: var(--muted); font-size: .79rem; font-weight: 750; }
+    dd { margin: 0; overflow-wrap: anywhere; font-size: .86rem; }
+
+    .limitations ol { margin: 0; padding-left: 22px; }
+    .limitations li + li { margin-top: 12px; }
+
+    footer {
+      padding: 34px 0 50px;
+      color: var(--muted);
+      border-top: 1px solid var(--line);
+      font-size: .82rem;
+    }
+
+    .footer-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px 24px;
+      justify-content: space-between;
+    }
+
+    @media (max-width: 900px) {
+      .grid-4, .grid-3 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .split { grid-template-columns: 1fr; }
+      .split > div + div { border-top: 1px solid var(--line); border-left: 0; }
+    }
+
+    @media (max-width: 620px) {
+      .hero { padding-top: 48px; }
+      .grid-4, .grid-3, .grid-2 { grid-template-columns: 1fr; }
+      .bar-row { grid-template-columns: 90px minmax(80px, 1fr) 68px; gap: 9px; }
+      .card, .chart-card { padding: 18px; border-radius: 18px; }
+      .environment dl { grid-template-columns: 1fr; gap: 3px; }
+      .environment dd { margin-bottom: 9px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .bar { animation: none; }
+    }
+
+    @media print {
+      body { background: #fff; }
+      nav { display: none; }
+      .card, .table-wrap, .split { break-inside: avoid; box-shadow: none; }
+      section { margin-top: 36px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <div class="shell">
+      <span class="eyebrow">Observed results · Run 01</span>
+      <h1>Execution boundaries,<br>measured on a Mac.</h1>
+      <p class="lede">
+        The same deterministic order summary ran as a skill-invoked Python process,
+        a persistent local MCP server, and a restricted MCP server inside Colima.
+        This page reports what happened - not what an architecture label promised.
+      </p>
+      <div class="hero-meta">
+        <span><strong>Run date:</strong> 26 July 2026</span>
+        <span><strong>Host:</strong> Apple Silicon · arm64</span>
+        <span><strong>Python:</strong> 3.14.6</span>
+        <span><strong>MCP:</strong> 1.28.1</span>
+        <span><strong>Environment:</strong> Darwin-arm64-py3.14.6</span>
+      </div>
+    </div>
+  </header>
+
+  <nav aria-label="Report sections">
+    <div class="shell">
+      <a href="#summary">Summary</a>
+      <a href="#latency">Latency</a>
+      <a href="#boundaries">Boundaries</a>
+      <a href="#hypotheses">Hypotheses</a>
+      <a href="#interpretation">Interpretation</a>
+      <a href="#environment">Environment</a>
+      <a href="#limitations">Limitations</a>
+    </div>
+  </nav>
+
+  <main class="shell">
+    <section id="summary">
+      <p class="section-kicker">Executive summary</p>
+      <h2>Three paths. One correct result.</h2>
+      <p class="section-intro">
+        Every measured invocation succeeded and produced the same semantic output.
+        The consequential differences were startup behavior, steady-state overhead,
+        and the authority available behind the invocation.
+      </p>
+
+      <div class="grid grid-4">
+        <article class="card metric rose">
+          <span class="label">Functional success</span>
+          <strong>93 / 93</strong>
+          <p>All cold and warm observations completed successfully.</p>
+        </article>
+        <article class="card metric blue">
+          <span class="label">Fastest warm median</span>
+          <strong>1.98 ms</strong>
+          <p>Persistent local MCP, including the stdio tool call.</p>
+        </article>
+        <article class="card metric orange">
+          <span class="label">Fastest cold start</span>
+          <strong>51.40 ms</strong>
+          <p>The skill-invoked Python process started first.</p>
+        </article>
+        <article class="card metric violet">
+          <span class="label">Narrowest tested boundary</span>
+          <strong>Container</strong>
+          <p>Restricted mounts, no host secret, read-only root, no network route.</p>
+        </article>
+      </div>
+
+      <div class="callout">
+        <span class="mark">!</span>
+        <div>
+          <strong>The latency result is about lifecycle design, not MCP in the abstract.</strong>
+          <p>
+            The skill benchmark starts a new Python interpreter for every observation.
+            Warm MCP calls reuse a persistent server session. That makes steady-state MCP
+            much faster here, while the skill remains the fastest cold path.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="latency">
+      <p class="section-kicker">Performance</p>
+      <h2>Cold favors simplicity. Warm favors persistence.</h2>
+      <p class="section-intro">
+        One cold observation and thirty warm observations were recorded per architecture.
+        Warm p95 uses the nearest-rank definition. Values below are wall-clock milliseconds.
+      </p>
+
+      <div class="card chart-card">
+        <div class="chart-group">
+          <div class="chart-heading">
+            <h3>Warm median latency</h3>
+            <span>lower is better</span>
+          </div>
+          <div class="bar-row">
+            <span class="bar-label">Skill process</span>
+            <div class="track"><div class="bar" style="--width:100%;--color:#be185d"></div></div>
+            <span class="bar-value">43.58 ms</span>
+          </div>
+          <div class="bar-row">
+            <span class="bar-label">Local MCP</span>
+            <div class="track"><div class="bar" style="--width:4.53%;--color:#2563eb"></div></div>
+            <span class="bar-value">1.98 ms</span>
+          </div>
+          <div class="bar-row">
+            <span class="bar-label">Isolated MCP</span>
+            <div class="track"><div class="bar" style="--width:9.08%;--color:#ea580c"></div></div>
+            <span class="bar-value">3.96 ms</span>
+          </div>
+        </div>
+
+        <div class="chart-group">
+          <div class="chart-heading">
+            <h3>Cold-start latency</h3>
+            <span>one observation per architecture</span>
+          </div>
+          <div class="bar-row">
+            <span class="bar-label">Skill process</span>
+            <div class="track"><div class="bar" style="--width:7.04%;--color:#be185d"></div></div>
+            <span class="bar-value">51.40 ms</span>
+          </div>
+          <div class="bar-row">
+            <span class="bar-label">Local MCP</span>
+            <div class="track"><div class="bar" style="--width:40.19%;--color:#2563eb"></div></div>
+            <span class="bar-value">293.33 ms</span>
+          </div>
+          <div class="bar-row">
+            <span class="bar-label">Isolated MCP</span>
+            <div class="track"><div class="bar" style="--width:100%;--color:#ea580c"></div></div>
+            <span class="bar-value">729.84 ms</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="table-wrap" style="margin-top:18px">
+        <table>
+          <thead>
+            <tr>
+              <th>Architecture</th>
+              <th>Cold</th>
+              <th>Warm median</th>
+              <th>Warm p95</th>
+              <th>Warm min</th>
+              <th>Warm max</th>
+              <th>Business median</th>
+              <th>Server median</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="arch"><span class="dot" style="--color:#be185d"></span>Skill process</span></td>
+              <td>51.40</td><td>43.58</td><td>50.11</td><td>42.22</td><td>75.73</td><td>0.140</td><td>-</td>
+            </tr>
+            <tr>
+              <td><span class="arch"><span class="dot" style="--color:#2563eb"></span>Local MCP</span></td>
+              <td>293.33</td><td>1.98</td><td>2.61</td><td>1.76</td><td>3.84</td><td>0.111</td><td>0.380</td>
+            </tr>
+            <tr>
+              <td><span class="arch"><span class="dot" style="--color:#ea580c"></span>Isolated MCP</span></td>
+              <td>729.84</td><td>3.96</td><td>6.90</td><td>3.42</td><td>7.72</td><td>0.435</td><td>0.968</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="grid grid-3" style="margin-top:18px">
+        <article class="card finding rose">
+          <span class="tag">Lifecycle effect</span>
+          <h3>Local MCP was 22.1× faster warm</h3>
+          <p>Relative to the process-per-invocation skill path. This is not a protocol-only comparison.</p>
+        </article>
+        <article class="card finding orange">
+          <span class="tag">Isolation cost</span>
+          <h3>Container warm latency was 2.0× local MCP</h3>
+          <p>The configured VM/container boundary added roughly two milliseconds at the median.</p>
+        </article>
+        <article class="card finding blue">
+          <span class="tag">Startup cost</span>
+          <h3>Skill cold start was 5.7× faster than local MCP</h3>
+          <p>It was 14.2× faster than the isolated MCP cold observation.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="boundaries">
+      <p class="section-kicker">Permissions and placement</p>
+      <h2>Local process separation did not narrow host authority.</h2>
+      <p class="section-intro">
+        Host rows are OS-authority approximations executed by a dedicated probe under
+        the same macOS user. Container rows were executed inside the real restricted
+        container as UID 10001. They answer different but complementary questions.
+      </p>
+
+      <div class="table-wrap">
+        <table class="matrix">
+          <thead>
+            <tr>
+              <th>Observed capability</th>
+              <th>Skill host user</th>
+              <th>Local MCP host user</th>
+              <th>Isolated MCP container</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Read designated input</td><td><span class="pill allowed">Allowed</span></td><td><span class="pill allowed">Allowed</span></td><td><span class="pill allowed">Allowed</span></td></tr>
+            <tr><td>Read unrelated / host repository file</td><td><span class="pill allowed">Allowed</span></td><td><span class="pill allowed">Allowed</span></td><td><span class="pill denied">Absent</span></td></tr>
+            <tr><td>Read restricted dummy fixture</td><td><span class="pill allowed">Allowed</span></td><td><span class="pill allowed">Allowed</span></td><td><span class="pill denied">Absent</span></td></tr>
+            <tr><td>Write designated output</td><td><span class="pill allowed">Allowed</span></td><td><span class="pill allowed">Allowed</span></td><td><span class="pill allowed">Allowed</span></td></tr>
+            <tr><td>Write elsewhere</td><td><span class="pill allowed">Allowed</span></td><td><span class="pill allowed">Allowed</span></td><td><span class="pill denied">Read-only</span></td></tr>
+            <tr><td>Enumerate parent / root directory</td><td><span class="pill allowed">Allowed</span></td><td><span class="pill allowed">Allowed</span></td><td><span class="pill allowed">Container only</span></td></tr>
+            <tr><td>Read dummy host environment variable</td><td><span class="pill allowed">Allowed</span></td><td><span class="pill allowed">Allowed</span></td><td><span class="pill denied">Not passed</span></td></tr>
+            <tr><td>Spawn fixed harmless subprocess</td><td><span class="pill allowed">Allowed</span></td><td><span class="pill allowed">Allowed</span></td><td><span class="pill allowed">Allowed</span></td></tr>
+            <tr><td>Outbound network attempt</td><td><span class="pill failed">DNS failed</span></td><td><span class="pill failed">DNS failed</span></td><td><span class="pill denied">No route</span></td></tr>
+            <tr><td>Read system file</td><td><span class="pill allowed">Host allowed</span></td><td><span class="pill allowed">Host allowed</span></td><td><span class="pill observed">Container allowed</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="scope-note">
+        “Absent” means the host path was not mounted into the container; it does not
+        mean MCP as a protocol cannot read files. Host network probes used a reserved
+        invalid domain, so their failed DNS lookup is inconclusive about network authority.
+        The container returned <span class="mono">Network is unreachable</span> under
+        <span class="mono">--network none</span>.
+      </p>
+
+      <div class="grid grid-3" style="margin-top:22px">
+        <article class="card finding blue">
+          <span class="tag">Local MCP</span>
+          <h3>Observable and typed, but still local</h3>
+          <p>The server had a separate process and narrow tool schema, yet its OS-level probe used the same host user authority.</p>
+        </article>
+        <article class="card finding orange">
+          <span class="tag">Isolated MCP</span>
+          <h3>Authority followed configuration</h3>
+          <p>Read-only mounts, omitted secrets, non-root execution, read-only root, and disabled networking produced the observed narrowing.</p>
+        </article>
+        <article class="card finding violet">
+          <span class="tag">Important nuance</span>
+          <h3>Subprocess execution remained available</h3>
+          <p>The container boundary narrowed reach, not every primitive. A Python subprocess still ran inside the container.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="hypotheses">
+      <p class="section-kicker">Hypothesis review</p>
+      <h2>What this run supports - and what it cannot settle.</h2>
+      <p class="section-intro">
+        These verdicts apply only to this implementation, lifecycle, host, and
+        configuration. “Supported” means consistent with the observations, not proven universally.
+      </p>
+
+      <div class="grid grid-2">
+        <article class="card hypothesis">
+          <span class="id">H1</span>
+          <div><h3>Invocation overhead</h3><p>The skill was fastest cold, but much slower warm because it restarted Python for every call.</p><span class="verdict">Mixed / lifecycle-dependent</span></div>
+        </article>
+        <article class="card hypothesis">
+          <span class="id">H2</span>
+          <div><h3>Transport and isolation overhead</h3><p>Isolated MCP added cold and warm latency relative to local MCP.</p><span class="verdict">Consistent with observation</span></div>
+        </article>
+        <article class="card hypothesis">
+          <span class="id">H3</span>
+          <div><h3>Capability narrowing</h3><p>The MCP schema was narrow, while OS authority depended on deployment. Semantic exposure and OS authority are distinct.</p><span class="verdict">Partially observed</span></div>
+        </article>
+        <article class="card hypothesis">
+          <span class="id">H4</span>
+          <div><h3>Local MCP is not necessarily isolated</h3><p>The local host probe could read and write the same test resources as the skill-host probe.</p><span class="verdict">Supported in this configuration</span></div>
+        </article>
+        <article class="card hypothesis">
+          <span class="id">H5</span>
+          <div><h3>Isolation matters more than labels</h3><p>The container narrowed authority because of mounts, user, filesystem, environment, and network settings.</p><span class="verdict">Supported in this configuration</span></div>
+        </article>
+        <article class="card hypothesis">
+          <span class="id">H6</span>
+          <div><h3>Resource placement differs</h3><p>Isolated execution moved the server into a Linux VM/container, but CPU and peak-memory usage were not directly measured.</p><span class="verdict">Placement observed; usage incomplete</span></div>
+        </article>
+        <article class="card hypothesis">
+          <span class="id">H7</span>
+          <div><h3>Observability differs</h3><p>MCP produced typed tool calls and server-duration logs. A comparative observability score was not collected.</p><span class="verdict">Qualitatively observed</span></div>
+        </article>
+      </div>
+    </section>
+
+    <section id="interpretation">
+      <p class="section-kicker">Responsible reading</p>
+      <h2>Observed fact is not architectural law.</h2>
+      <div class="split">
+        <div class="fact-side">
+          <h3>Observed on this Mac</h3>
+          <ul>
+            <li>All three wrappers returned the correct deterministic summary.</li>
+            <li>Persistent MCP sessions were faster for warm calls than process-per-call skill execution.</li>
+            <li>The isolated configuration could not see unmounted host files or the dummy host environment variable.</li>
+            <li>The isolated root filesystem prevented an unrelated write.</li>
+            <li>The isolated process could still spawn a subprocess and read container system files.</li>
+          </ul>
+        </div>
+        <div class="interpret-side">
+          <h3>Qualified interpretation</h3>
+          <ul>
+            <li>Persistent service lifecycle can dominate tiny-task invocation performance.</li>
+            <li>A local MCP process can improve interface standardization without reducing OS-user authority.</li>
+            <li>A separately configured container can narrow filesystem, environment, and network reach.</li>
+            <li>Security came from the actual boundary and least-privilege settings - not from the word “MCP.”</li>
+            <li>Primitive capability inside a container is different from access to host resources.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="environment">
+      <p class="section-kicker">Reproducibility context</p>
+      <h2>The machine behind the numbers.</h2>
+      <div class="grid grid-2">
+        <article class="card environment">
+          <h3>Host and Python</h3>
+          <dl>
+            <dt>Host platform</dt><dd>macOS 26.5.2 · arm64</dd>
+            <dt>Python</dt><dd>3.14.6</dd>
+            <dt>MCP SDK</dt><dd>1.28.1</dd>
+            <dt>Environment ID</dt><dd class="mono">Darwin-arm64-py3.14.6</dd>
+            <dt>Captured</dt><dd>26 July 2026 · 17:46:37 UTC</dd>
+          </dl>
+        </article>
+        <article class="card environment">
+          <h3>Container runtime</h3>
+          <dl>
+            <dt>Colima</dt><dd>0.10.3 · macOS Virtualization.Framework</dd>
+            <dt>VM</dt><dd>2 CPU · 2 GiB memory · aarch64 · VirtioFS</dd>
+            <dt>Docker</dt><dd>Client 29.6.2 · Server 29.5.2</dd>
+            <dt>Server OS</dt><dd>Ubuntu 24.04.4 LTS</dd>
+            <dt>Container limits</dt><dd>0.5 CPU · 128 MiB · read-only root · network none</dd>
+            <dt>Runtime user</dt><dd class="mono">experiment (UID 10001)</dd>
+          </dl>
+        </article>
+      </div>
+    </section>
+
+    <section id="limitations">
+      <p class="section-kicker">Limitations and next steps</p>
+      <h2>Useful evidence, not a universal benchmark.</h2>
+      <div class="card limitations">
+        <ol>
+          <li><strong>One host and one run date.</strong> Results need repetition across machines and runtime versions.</li>
+          <li><strong>One cold observation.</strong> Cold-start comparisons are descriptive and especially sensitive to caches and runtime state.</li>
+          <li><strong>Unequal warm lifecycle.</strong> MCP reused a server session; the skill restarted Python. A persistent skill worker or process-per-call MCP condition would isolate lifecycle effects.</li>
+          <li><strong>Tiny computation.</strong> The task intentionally magnifies orchestration overhead; heavier workloads will change the proportions.</li>
+          <li><strong>Host probes approximate OS authority.</strong> They were not exposed as actual skill or MCP tools and therefore do not measure semantic tool reach.</li>
+          <li><strong>Resource usage incomplete.</strong> CPU time, peak memory, process count, and filesystem I/O were not captured consistently.</li>
+          <li><strong>Host network probe inconclusive.</strong> DNS failure against an invalid domain does not establish a network policy.</li>
+          <li><strong>No model-selection variability.</strong> The harness intentionally excludes an LLM so architecture overhead is measured independently.</li>
+        </ol>
+      </div>
+    </section>
+
+    <section>
+      <p class="section-kicker">Source evidence</p>
+      <h2>Trace the report back to the run.</h2>
+      <div class="grid grid-3">
+        <a class="card" href="experiments/execution-boundaries/results/20260726-mac/20260726_latency-skill.csv"><strong>Skill latency CSV</strong><br><small>31 observations</small></a>
+        <a class="card" href="experiments/execution-boundaries/results/20260726-mac/20260726_latency-mcp-local.csv"><strong>Local MCP latency CSV</strong><br><small>31 observations</small></a>
+        <a class="card" href="experiments/execution-boundaries/results/20260726-mac/20260726_latency-mcp-isolated.csv"><strong>Isolated MCP latency CSV</strong><br><small>31 observations</small></a>
+        <a class="card" href="experiments/execution-boundaries/results/20260726-mac/20260726_permissions.csv"><strong>Permission observations</strong><br><small>30 capability rows</small></a>
+        <a class="card" href="experiments/execution-boundaries/results/20260726-mac/20260726_environment.json"><strong>Environment metadata</strong><br><small>Host, Colima, Docker, image</small></a>
+        <a class="card" href="experiments/execution-boundaries/README.md"><strong>Experiment protocol</strong><br><small>Reproduction steps and caveats</small></a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="shell footer-row">
+      <span>Language, Knowledge and Action · AI Architecture Experiments</span>
+      <span>Generated from observed local evidence · 26 July 2026</span>
+    </div>
+  </footer>
+</body>
+</html>

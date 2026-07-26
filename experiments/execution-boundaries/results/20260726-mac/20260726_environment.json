@@ -1,0 +1,48 @@
+{
+  "captured_at": "2026-07-26T17:46:37.082644+00:00",
+  "colima": {
+    "cli_installed": true,
+    "status": {
+      "available": true,
+      "output": "{\"display_name\":\"colima\",\"driver\":\"macOS Virtualization.Framework\",\"arch\":\"aarch64\",\"runtime\":\"docker\",\"mount_type\":\"virtiofs\",\"docker_socket\":\"unix://<HOME>/.colima/default/docker.sock\",\"containerd_socket\":\"unix://<HOME>/.colima/default/containerd.sock\",\"kubernetes\":false,\"cpu\":2,\"memory\":2147483648,\"disk\":107374182400}",
+      "returncode": 0
+    },
+    "version": {
+      "available": true,
+      "output": "colima version 0.10.3\ngit commit: 00f6c297e92a82c04a4ab507db0a61435650d7e8\n\nruntime: docker\narch: aarch64\nclient: v29.6.2\nserver: v29.5.2",
+      "returncode": 0
+    }
+  },
+  "docker": {
+    "active_context": {
+      "available": true,
+      "output": "colima",
+      "returncode": 0
+    },
+    "cli_installed": true,
+    "cli_version": {
+      "available": true,
+      "output": "Docker version 29.6.2, build dfc4efb1e2",
+      "returncode": 0
+    },
+    "isolated_image": {
+      "available": true,
+      "output": "id=sha256:836f2a783568c29680a917be6672abe320796d6874eb4a354e725bbedebd42fd;user=experiment;digests=[\"orders-mcp-isolated@sha256:836f2a783568c29680a917be6672abe320796d6874eb4a354e725bbedebd42fd\"]",
+      "returncode": 0
+    },
+    "server": {
+      "available": true,
+      "output": "version=29.5.2;os=Ubuntu 24.04.4 LTS;arch=aarch64;cpus=2;memory=2053586944",
+      "returncode": 0
+    }
+  },
+  "environment_id": "Darwin-arm64-py3.14.6",
+  "host": {
+    "machine": "arm64",
+    "os": "macOS-26.5.2-arm64-arm-64bit-Mach-O",
+    "python": "3.14.6"
+  },
+  "packages": {
+    "mcp": "1.28.1"
+  }
+}

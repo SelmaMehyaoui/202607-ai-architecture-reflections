@@ -1,0 +1,31 @@
+architecture,capability,expected,actual,executing_boundary,notes
+skill,read designated input,allowed,allowed,permission-test process (same host OS user),"explicit fixture; OS-authority approximation, not exposed as an MCP tool"
+skill,read unrelated repository file,observe,allowed,permission-test process (same host OS user),"repository README only; OS-authority approximation, not exposed as an MCP tool"
+skill,read restricted fixture,observe,allowed,permission-test process (same host OS user),"dummy secret only; OS-authority approximation, not exposed as an MCP tool"
+skill,write designated output,allowed,allowed,permission-test process (same host OS user),"disposable results directory; OS-authority approximation, not exposed as an MCP tool"
+skill,write elsewhere in repository,observe,allowed,permission-test process (same host OS user),"disposable security-fixture path removed after the probe; OS-authority approximation, not exposed as an MCP tool"
+skill,enumerate parent directory,observe,allowed,permission-test process (same host OS user),"names are not persisted; OS-authority approximation, not exposed as an MCP tool"
+skill,read dummy environment variable,observe,allowed,permission-test process (same host OS user),"fake value only; OS-authority approximation, not exposed as an MCP tool"
+skill,spawn subprocess,observe,allowed,permission-test process (same host OS user),"fixed harmless Python command; no shell; OS-authority approximation, not exposed as an MCP tool"
+skill,outbound network,observe,connection_failed,permission-test process (same host OS user),"reserved invalid domain; no service contacted; OS-authority approximation, not exposed as an MCP tool; gaierror: [Errno 8] nodename nor servname provided, or not known; failure does not establish an administrative denial"
+skill,read outside intended working area,observe,allowed,permission-test process (same host OS user),"non-sensitive host system file; OS-authority approximation, not exposed as an MCP tool"
+mcp-local,read designated input,allowed,allowed,permission-test process (same host OS user),"explicit fixture; OS-authority approximation, not exposed as an MCP tool"
+mcp-local,read unrelated repository file,observe,allowed,permission-test process (same host OS user),"repository README only; OS-authority approximation, not exposed as an MCP tool"
+mcp-local,read restricted fixture,observe,allowed,permission-test process (same host OS user),"dummy secret only; OS-authority approximation, not exposed as an MCP tool"
+mcp-local,write designated output,allowed,allowed,permission-test process (same host OS user),"disposable results directory; OS-authority approximation, not exposed as an MCP tool"
+mcp-local,write elsewhere in repository,observe,allowed,permission-test process (same host OS user),"disposable security-fixture path removed after the probe; OS-authority approximation, not exposed as an MCP tool"
+mcp-local,enumerate parent directory,observe,allowed,permission-test process (same host OS user),"names are not persisted; OS-authority approximation, not exposed as an MCP tool"
+mcp-local,read dummy environment variable,observe,allowed,permission-test process (same host OS user),"fake value only; OS-authority approximation, not exposed as an MCP tool"
+mcp-local,spawn subprocess,observe,allowed,permission-test process (same host OS user),"fixed harmless Python command; no shell; OS-authority approximation, not exposed as an MCP tool"
+mcp-local,outbound network,observe,connection_failed,permission-test process (same host OS user),"reserved invalid domain; no service contacted; OS-authority approximation, not exposed as an MCP tool; gaierror: [Errno 8] nodename nor servname provided, or not known; failure does not establish an administrative denial"
+mcp-local,read outside intended working area,observe,allowed,permission-test process (same host OS user),"non-sensitive host system file; OS-authority approximation, not exposed as an MCP tool"
+mcp-isolated,read designated input,allowed,allowed,container permission-probe process (UID 10001),
+mcp-isolated,read restricted fixture,denied,denied,container permission-probe process (UID 10001),FileNotFoundError: [Errno 2] No such file or directory: '/security-fixtures/restricted/secret.txt'
+mcp-isolated,write designated output,allowed,allowed,container permission-probe process (UID 10001),
+mcp-isolated,write elsewhere,denied,denied,container permission-probe process (UID 10001),OSError: [Errno 30] Read-only file system: '/app/permission-probe.txt'
+mcp-isolated,enumerate parent directory,allowed,allowed,container permission-probe process (UID 10001),
+mcp-isolated,read dummy environment variable,denied,denied,container permission-probe process (UID 10001),dummy variable was not passed into the container
+mcp-isolated,spawn subprocess,allowed,allowed,container permission-probe process (UID 10001),
+mcp-isolated,outbound network,connection_failed,connection_failed,container permission-probe process (UID 10001),OSError: [Errno 101] Network is unreachable
+mcp-isolated,read host repository file,denied,denied,container permission-probe process (UID 10001),FileNotFoundError: [Errno 2] No such file or directory: '/repository/README.md'
+mcp-isolated,read container system file,allowed,allowed,container permission-probe process (UID 10001),
