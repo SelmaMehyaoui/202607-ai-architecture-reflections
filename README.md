@@ -26,3 +26,17 @@ Many thanks to the colleagues and friends who kindly reviewed early drafts and p
 Version 1.0
 
 The essay is intentionally presented as a reflection rather than a research paper. Comments, questions and counterpoints are warmly welcome. (Email: selma.mehyaoui@gmail.com)
+
+## Experiments
+
+The first empirical companion is
+[`experiments/execution-boundaries`](experiments/execution-boundaries/README.md).
+It compares a skill-invoked script, a local MCP server, and the same MCP tool
+inside a narrowly mounted container. The experiment is neutral: its purpose is
+to measure where code executes and which capabilities each configured runtime
+actually has.
+
+An editable two-page
+[`Draw.io architecture diagram`](docs/execution-boundaries-architecture.drawio)
+summarizes the execution paths, trust boundaries, benchmark methodology, and
+evidence flow.
