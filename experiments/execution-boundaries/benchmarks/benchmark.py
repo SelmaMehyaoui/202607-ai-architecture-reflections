@@ -17,7 +17,7 @@ from pathlib import Path
 from time import perf_counter_ns
 from typing import Any
 
-from environment import environment
+from environment import environment_id
 
 ROOT = Path(__file__).resolve().parents[1]
 INPUT = ROOT / "common/input/orders.csv"
@@ -53,7 +53,7 @@ def record(
         "server_duration_ns": metadata.get("server_duration_ns", ""),
         "success": success,
         "timestamp": datetime.now(UTC).isoformat(),
-        "environment_id": environment()["environment_id"],
+        "environment_id": environment_id(),
     }
 
 
@@ -183,11 +183,16 @@ def main() -> int:
     parser.add_argument("architecture", choices=["skill", "mcp-local", "mcp-isolated"])
     parser.add_argument("--cold", type=int, default=1)
     parser.add_argument("--warm", type=int, default=30)
-    parser.add_argument("--output", type=Path, default=ROOT / "results/latency.csv")
+    parser.add_argument(
+        "--output",
+        type=Path,
+        help="CSV destination (default: results/latency-<architecture>.csv)",
+    )
     args = parser.parse_args()
     if args.cold < 0 or args.warm < 1:
         parser.error("--cold must be non-negative and --warm must be positive")
-    args.output.parent.mkdir(parents=True, exist_ok=True)
+    output_path = args.output or ROOT / f"results/latency-{args.architecture}.csv"
+    output_path.parent.mkdir(parents=True, exist_ok=True)
     # Colima shares the repository's /Users path, but not macOS /var/folders.
     temporary_parent = ROOT / "results" if args.architecture == "mcp-isolated" else None
     with tempfile.TemporaryDirectory(
@@ -202,7 +207,7 @@ def main() -> int:
             if args.architecture == "skill"
             else asyncio.run(benchmark_mcp(args.architecture, args.cold, args.warm, output_dir))
         )
-    with args.output.open("w", encoding="utf-8", newline="") as target:
+    with output_path.open("w", encoding="utf-8", newline="") as target:
         writer = csv.DictWriter(target, fieldnames=FIELDS)
         writer.writeheader()
         writer.writerows(rows)

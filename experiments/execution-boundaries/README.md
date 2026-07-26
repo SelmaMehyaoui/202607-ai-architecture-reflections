@@ -41,9 +41,31 @@ Benchmark one cold and at least 30 warm observations:
 ```sh
 .venv/bin/python experiments/execution-boundaries/benchmarks/benchmark.py skill
 .venv/bin/python experiments/execution-boundaries/benchmarks/benchmark.py mcp-local
+```
+
+For isolated execution, first verify a Docker-compatible engine. With Colima:
+
+```sh
+colima start --cpu 2 --memory 2
+docker context show
+docker info
+```
+
+Then build and benchmark from the experiment directory:
+
+```sh
 cd experiments/execution-boundaries
 docker build -f mcp-isolated/Dockerfile -t orders-mcp-isolated .
 ../../.venv/bin/python benchmarks/benchmark.py mcp-isolated
+cd ../..
+```
+
+The three commands write separate files:
+
+```text
+results/latency-skill.csv
+results/latency-mcp-local.csv
+results/latency-mcp-isolated.csv
 ```
 
 The isolated runner mounts only the fixture input directory read-only and a
@@ -61,11 +83,17 @@ Environment and safe host permission observations:
 .venv/bin/python experiments/execution-boundaries/benchmarks/permission_tests.py
 ```
 
-The initial permission runner measures a probe process under the same host user;
-it does not claim those operations are exposed by the narrow MCP tool schema.
-Its reserved invalid-domain network probe records that no connection completed,
-not proof that host networking is administratively denied. Container outcomes
-remain `not run` until they are observed under Docker.
+The environment command persists `results/environment.json`, including host,
+package, active Docker context, Docker server, isolated-image, and Colima
+metadata where available.
+
+The permission runner measures host OS authority using a dedicated probe process
+under the same user for the skill and local-MCP configurations; it does not
+claim those operations are exposed by the narrow MCP tool schema. It then runs a
+fixed probe program inside the actual restricted container and records those
+outcomes separately. Network connection failures include their error details
+and are not treated as proof of administrative denial unless the runtime
+configuration (such as `--network none`) supplies that context.
 
 ## Protocol
 
@@ -83,4 +111,5 @@ is a conclusion before results exist.
 See [`docs/methodology.md`](../../docs/methodology.md) for reporting rules.
 The editable
 [`Draw.io overview`](../../docs/ai-architecture-experiments.drawio)
-provides a two-page visual summary of the architecture and evidence pipeline.
+provides a three-page visual summary of both experiments, their architectures,
+and their evidence pipelines.

@@ -25,6 +25,12 @@ output directory as writable. The repository is not mounted, the process runs
 as a non-root user, and the benchmark requests no container network. Resource
 limits are runner settings because a Dockerfile cannot enforce them.
 
+Host permission rows are OS-authority approximations executed by a dedicated
+probe process under the same host user; they are not claims about operations
+exposed through an MCP schema. Isolated rows are executed by a fixed probe
+program inside the configured container. Network results must distinguish a
+failed connection attempt from a denial attributable to runtime configuration.
+
 ## Reporting
 
 Keep observations separate from interpretations:

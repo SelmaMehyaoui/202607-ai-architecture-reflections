@@ -5,5 +5,6 @@ WORKDIR /app
 RUN pip install --no-cache-dir "mcp>=1.27,<2"
 COPY common/ /app/common/
 COPY mcp-isolated/server.py /app/server.py
+COPY mcp-isolated/permission_probe.py /app/permission_probe.py
 USER experiment
 ENTRYPOINT ["python", "/app/server.py"]
