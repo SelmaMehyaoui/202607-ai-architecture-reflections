@@ -8,8 +8,11 @@ MCP client    → stdio     → local MCP server process
 MCP client    → stdio     → narrowly mounted container MCP server
 ```
 
-The model selects or proposes an action; it does not itself execute Python or
-access files. The invoking runtime, local server, or container process performs
+When following a `SKILL.md`, the model may decide that a bundled Python script
+should be run and generate the invocation. The agent runtime actually launches
+the script, and the resulting Python process executes with the permissions
+granted to that runtime. Similarly, for MCP, the model may select a tool and
+generate its arguments, while the local server or container process performs
 the action with the authority granted to that configured boundary.
 
 ## Task and fixture
