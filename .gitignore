@@ -14,3 +14,5 @@ build/
 experiments/execution-boundaries/results/*.csv
 experiments/execution-boundaries/results/*.json
 !experiments/execution-boundaries/results/README.md
+experiments/model-tool-composition/results/*
+!experiments/model-tool-composition/results/README.md

@@ -35,3 +35,22 @@ Keep observations separate from interpretations:
 
 Do not generalize a deployment result into a property of MCP or skills. Record
 unavailable metrics and unexecuted probes as limitations; never fabricate them.
+
+## Model–tool composition study
+
+The model–tool composition experiment is methodologically separate from the
+execution-boundary benchmark. It varies model class and the allocation of
+controlled knowledge/computation in a 2×2 design. Its primary endpoint is
+end-to-end task success, not raw model output quality or tool-call validity.
+
+Both model classes receive the same synthetic facts, tasks, and answer criteria.
+The direct-context condition supplies those facts in the prompt; the MCP
+condition exposes them through a fixed typed interface. Model identity should be
+hidden during rubric grading. A non-inferiority margin, repetition count, retry
+policy, and uncertainty method must be fixed before comparative results are
+collected.
+
+Comparable performance supports only a bounded inference about the tested task
+distribution. It does not establish general equivalence between lightweight and
+remote models. See
+[`experiments/model-tool-composition/methodology.md`](../experiments/model-tool-composition/methodology.md).

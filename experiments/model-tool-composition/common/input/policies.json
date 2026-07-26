@@ -1,0 +1,17 @@
+{
+  "amber": {
+    "return_window_days": 21,
+    "restocking_fee_percent": 0,
+    "condition": "Unused items in original packaging"
+  },
+  "cobalt": {
+    "return_window_days": 14,
+    "restocking_fee_percent": 10,
+    "condition": "Unopened items with the numbered seal intact"
+  },
+  "verdant": {
+    "return_window_days": 30,
+    "restocking_fee_percent": 0,
+    "condition": "Unused items with the fictional Norvale tag attached"
+  }
+}

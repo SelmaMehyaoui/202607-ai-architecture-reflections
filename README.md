@@ -36,7 +36,14 @@ inside a narrowly mounted container. The experiment is neutral: its purpose is
 to measure where code executes and which capabilities each configured runtime
 actually has.
 
-An editable two-page
-[`Draw.io architecture diagram`](docs/execution-boundaries-architecture.drawio)
-summarizes the execution paths, trust boundaries, benchmark methodology, and
-evidence flow.
+The second experiment,
+[`experiments/model-tool-composition`](experiments/model-tool-composition/README.md),
+tests how externalizing controlled knowledge and deterministic operations behind
+the same MCP interface changes the model capability required for end-to-end
+task success. It compares lightweight local and remote reference models under
+direct-context and MCP-assisted conditions.
+
+An editable multi-page
+[`Draw.io architecture diagram`](docs/ai-architecture-experiments.drawio)
+summarizes both experiments, their execution paths, trust boundaries,
+methodologies, and evidence flows.

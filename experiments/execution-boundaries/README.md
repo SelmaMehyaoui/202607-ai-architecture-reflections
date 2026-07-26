@@ -79,5 +79,5 @@ is a conclusion before results exist.
 
 See [`docs/methodology.md`](../../docs/methodology.md) for reporting rules.
 The editable
-[`Draw.io overview`](../../docs/execution-boundaries-architecture.drawio)
+[`Draw.io overview`](../../docs/ai-architecture-experiments.drawio)
 provides a two-page visual summary of the architecture and evidence pipeline.
