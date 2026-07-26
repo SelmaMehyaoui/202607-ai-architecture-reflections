@@ -1,0 +1,9 @@
+order_id,category,quantity,unit_price
+O-001,books,2,12.50
+O-002,garden,1,45.00
+O-003,books,3,8.00
+O-004,electronics,1,199.99
+O-005,garden,4,7.25
+O-006,electronics,2,15.50
+O-007,books,1,20.00
+O-008,kitchen,2,18.75

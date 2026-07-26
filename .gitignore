@@ -2,3 +2,15 @@
 *.venv*
 *.DS_Store
 .vscode/
+_prompts/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+dist/
+build/
+*.egg-info/
+experiments/execution-boundaries/results/*.csv
+experiments/execution-boundaries/results/*.json
+!experiments/execution-boundaries/results/README.md
