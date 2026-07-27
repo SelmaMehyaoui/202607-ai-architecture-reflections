@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "run_id": null,
+  "pair_index": null,
+  "position_in_pair": null,
+  "condition": null,
+  "started_at": null,
+  "completed_at": null,
+  "repository_commit": null,
+  "environment": {
+    "codex_surface": null,
+    "codex_version": null,
+    "displayed_model": null,
+    "reasoning_setting": null,
+    "permission_mode": null,
+    "operating_system": null,
+    "architecture": null,
+    "python_version": null,
+    "mcp_version": null
+  },
+  "configuration": {
+    "skill_discovery_method": null,
+    "mcp_registration_method": null
+  },
+  "paths": {
+    "input": null,
+    "output": null
+  },
+  "observations": {
+    "assigned_interface_used": null,
+    "action_name": null,
+    "action_arguments": null,
+    "action_call_count": null,
+    "model_turn_count": null,
+    "permission_prompt_count": null,
+    "output_sha256": null,
+    "total_orders": null,
+    "total_revenue": null,
+    "final_answer_correct": null,
+    "wall_time_ms": null,
+    "tool_execution_ms": null,
+    "token_count": null,
+    "token_measurement_source": "unavailable"
+  },
+  "success": null,
+  "error": null,
+  "protocol_deviations": [],
+  "artifacts": {
+    "prompt": null,
+    "transcript": null,
+    "output": null
+  }
+}

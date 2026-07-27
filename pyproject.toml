@@ -29,5 +29,8 @@ ignore = ["ASYNC221", "EXE001"]
 python_version = "3.11"
 strict = true
 explicit_package_bases = true
-files = ["experiments/execution-boundaries"]
+files = [
+  "experiments/execution-boundaries",
+  "experiments/complete-ai-system-config/run_benchmark.py",
+]
 exclude = ["experiments/execution-boundaries/mcp-(local|isolated)/"]

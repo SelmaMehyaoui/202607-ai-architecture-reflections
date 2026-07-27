@@ -60,3 +60,21 @@ Comparable performance supports only a bounded inference about the tested task
 distribution. It does not establish general equivalence between lightweight and
 remote models. See
 [`experiments/model-tool-composition/methodology.md`](../experiments/model-tool-composition/methodology.md).
+
+## Complete AI system configuration study
+
+The complete-system experiment is also separate from the execution-boundary
+benchmark. Its primary protocol uses Codex as the shared model and agent in two
+fresh sessions. One session follows the Skill and its declared script; the
+other invokes the registered MCP tool. The prompt, model setting, permissions,
+repository revision, task, and expected result are held constant.
+
+Codex token consumption is recorded only when the chosen surface exposes a
+reliable per-session value. Otherwise it remains explicitly unavailable.
+Elapsed time, action selection, calls, deterministic output, final correctness,
+permission prompts, and deviations are still observable. A separate API-driven
+extension records provider usage for compatible local or remote endpoints, and
+its results are not pooled with the Codex study.
+
+See
+[`experiments/complete-ai-system-config/methodology.md`](../experiments/complete-ai-system-config/methodology.md).

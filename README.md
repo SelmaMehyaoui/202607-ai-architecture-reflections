@@ -43,7 +43,15 @@ the same MCP interface changes the model capability required for end-to-end
 task success. It compares lightweight local and remote reference models under
 direct-context and MCP-assisted conditions.
 
+The third experiment,
+[`experiments/complete-ai-system-config`](experiments/complete-ai-system-config/README.md),
+uses Codex as the shared model and agent while comparing two complete
+configurations: a Skill plus its declared script, and an MCP client plus a local
+MCP server. Fresh sessions, a frozen prompt, explicit run records, and honest
+handling of unavailable token telemetry make the comparison reproducible. A
+separate API-driven harness is retained for later local and remote model runs.
+
 An editable multi-page
 [`Draw.io architecture diagram`](docs/ai-architecture-experiments.drawio)
-summarizes both experiments, their execution paths, trust boundaries,
+summarizes the experiments, their execution paths, trust boundaries,
 methodologies, and evidence flows.

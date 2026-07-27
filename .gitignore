@@ -16,3 +16,5 @@ experiments/execution-boundaries/results/*.json
 !experiments/execution-boundaries/results/README.md
 experiments/model-tool-composition/results/*
 !experiments/model-tool-composition/results/README.md
+experiments/complete-ai-system-config/results/*
+!experiments/complete-ai-system-config/results/README.md
