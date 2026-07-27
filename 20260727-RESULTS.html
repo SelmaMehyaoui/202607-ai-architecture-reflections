@@ -464,6 +464,39 @@
       grid-template-columns: repeat(4, minmax(0, 1fr));
     }
 
+    .glossary-panel {
+      overflow: hidden;
+      margin-top: 14px;
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      background: rgba(255, 255, 255, .7);
+      box-shadow: 0 12px 40px rgba(30, 41, 59, .045);
+    }
+
+    .glossary-panel > summary {
+      position: relative;
+      padding: 18px 54px 18px 20px;
+      cursor: pointer;
+      list-style: none;
+    }
+
+    .glossary-panel > summary::-webkit-details-marker { display: none; }
+
+    .glossary-panel > summary::after {
+      position: absolute;
+      top: 17px;
+      right: 20px;
+      color: var(--rose);
+      content: "+";
+      font-size: 1.35rem;
+      line-height: 1;
+    }
+
+    .glossary-panel[open] > summary::after { content: "−"; }
+    .glossary-panel > summary strong { display: block; font-size: 1rem; }
+    .glossary-panel > summary small { color: var(--muted); font-size: .78rem; }
+    .glossary-panel > .glossary { padding: 0 14px 14px; }
+
     .glossary details {
       padding: 0;
       overflow: hidden;
@@ -615,6 +648,21 @@
         411.49. The observed differences lie in model context, supporting-agent
         activity, startup, and execution boundaries.
       </p>
+
+      <article class="card" style="margin-bottom:18px">
+        <h3>The deterministic task, precisely</h3>
+        <p style="margin-bottom:0">
+          Each configuration had to read the same synthetic order CSV; validate
+          the required <span class="mono">order_id</span>,
+          <span class="mono">category</span>,
+          <span class="mono">quantity</span>, and
+          <span class="mono">unit_price</span> fields; calculate each row's
+          revenue as quantity × unit price; and write a fixed JSON structure
+          containing total order count and revenue, plus order count and revenue
+          by category. The frozen expected result contains 8 orders and total
+          revenue of <span class="mono">411.49</span>.
+        </p>
+      </article>
 
       <div class="grid grid-4">
         <article class="card metric rose">
@@ -948,11 +996,16 @@
       <h2>Click a term to see its meaning.</h2>
       <p class="section-intro">
         These definitions use the meaning intended in this experiment. They are
-        deliberately written for readers without a software, AI, or hardware
-        background.
+        all preserved, but separated so each reader can choose the useful level
+        of detail.
       </p>
 
-      <div class="grid grid-2 glossary">
+      <details class="glossary-panel">
+        <summary>
+          <strong>Essential concepts — start here</strong>
+          <small>The minimum vocabulary needed to follow the experiment.</small>
+        </summary>
+        <div class="grid glossary">
         <details class="card" id="term-codex">
           <summary>Codex</summary>
           <p>
@@ -1037,16 +1090,6 @@
           </p>
         </details>
 
-        <details class="card" id="term-stdio">
-          <summary>stdio transport</summary>
-          <p>
-            Standard input and standard output are basic streams used by
-            programs to exchange text or bytes. In this experiment, the Codex
-            MCP client and each MCP server exchanged protocol messages through
-            these streams instead of through a public network port.
-          </p>
-        </details>
-
         <details class="card" id="term-container">
           <summary>Container</summary>
           <p>
@@ -1055,6 +1098,54 @@
             operating-system kernel, so it is lighter than a full virtual
             machine. Isolation comes from the container's actual settings, not
             from the word "container."
+          </p>
+        </details>
+
+        <details class="card" id="term-deterministic">
+          <summary>Deterministic operation</summary>
+          <p>
+            An operation designed to return the same output whenever it receives
+            the same valid input. The order-summary calculation is deterministic,
+            which lets the experiment compare architectures without ambiguity
+            about the correct business result.
+          </p>
+        </details>
+
+        <details class="card" id="term-json-csv">
+          <summary>CSV and JSON</summary>
+          <p>
+            CSV is a simple table format in which values are separated by
+            commas. JSON is a structured text format using named fields, lists,
+            numbers, and strings. The experiment reads orders from CSV and
+            writes the summary as JSON.
+          </p>
+        </details>
+
+        <details class="card" id="term-token">
+          <summary>Token</summary>
+          <p>
+            A token is a small unit of text processed by a language model. A
+            token may be a whole word, part of a word, punctuation, or formatting.
+            Token counts describe model input and output volume, not MCP message
+            count and not elapsed time.
+          </p>
+        </details>
+        </div>
+      </details>
+
+      <details class="glossary-panel">
+        <summary>
+          <strong>Technical details — go deeper</strong>
+          <small>Execution, isolation, accounting, timing, and evidence terms.</small>
+        </summary>
+        <div class="grid glossary">
+        <details class="card" id="term-stdio">
+          <summary>stdio transport</summary>
+          <p>
+            Standard input and standard output are basic streams used by
+            programs to exchange text or bytes. In this experiment, the Codex
+            MCP client and each MCP server exchanged protocol messages through
+            these streams instead of through a public network port.
           </p>
         </details>
 
@@ -1093,36 +1184,6 @@
             temporarily holds working data. The isolated container was limited
             to half of one CPU core and 128 MiB of memory to bound its resource
             use.
-          </p>
-        </details>
-
-        <details class="card" id="term-deterministic">
-          <summary>Deterministic operation</summary>
-          <p>
-            An operation designed to return the same output whenever it receives
-            the same valid input. The order-summary calculation is deterministic,
-            which lets the experiment compare architectures without ambiguity
-            about the correct business result.
-          </p>
-        </details>
-
-        <details class="card" id="term-json-csv">
-          <summary>CSV and JSON</summary>
-          <p>
-            CSV is a simple table format in which values are separated by
-            commas. JSON is a structured text format using named fields, lists,
-            numbers, and strings. The experiment reads orders from CSV and
-            writes the summary as JSON.
-          </p>
-        </details>
-
-        <details class="card" id="term-token">
-          <summary>Token</summary>
-          <p>
-            A token is a small unit of text processed by a language model. A
-            token may be a whole word, part of a word, punctuation, or formatting.
-            Token counts describe model input and output volume, not MCP message
-            count and not elapsed time.
           </p>
         </details>
 
@@ -1240,6 +1301,7 @@
           </p>
         </details>
       </div>
+      </details>
 
       <p class="glossary-note">
         Linked terms elsewhere on this page are shown with a dotted underline.
@@ -1279,7 +1341,11 @@
   <script>
     function openGlossaryTarget() {
       const target = document.getElementById(decodeURIComponent(location.hash.slice(1)));
-      if (target && target.tagName === "DETAILS") target.open = true;
+      if (target && target.tagName === "DETAILS") {
+        const panel = target.closest(".glossary-panel");
+        if (panel) panel.open = true;
+        target.open = true;
+      }
     }
     window.addEventListener("hashchange", openGlossaryTarget);
     openGlossaryTarget();
