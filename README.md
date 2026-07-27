@@ -56,3 +56,27 @@ An editable multi-page
 [`Draw.io architecture diagram`](docs/ai-architecture-experiments.drawio)
 summarizes the experiments, their execution paths, trust boundaries,
 methodologies, and evidence flows.
+
+## Roadmap
+
+This repository is a work in progress. Planned extensions include:
+
+- repeat the complete-system comparison to build a larger sample;
+- test lightweight local and remote models with the same controlled tools;
+- deploy the same MCP server to one European and one US Azure region;
+- separate network, connection, server, tool, guardian, and end-to-end latency;
+- compare cold connections with reused connections under the same protocol;
+- extend the task set beyond the current deterministic order summary.
+
+The regional Azure experiment will keep the MCP implementation, deployment
+configuration, data, authentication, and resource limits as consistent as
+possible. Results will describe the tested client, regions, and network
+conditions rather than claim a universal Europe-versus-US performance ranking.
+
+## Contributions
+
+Reproductions, methodological reviews, counterexamples, additional task
+fixtures, and carefully scoped experiment proposals are welcome. Please keep
+observations separate from interpretations, preserve failed runs, document the
+exact environment, and avoid committing credentials, private data, or personal
+paths.
