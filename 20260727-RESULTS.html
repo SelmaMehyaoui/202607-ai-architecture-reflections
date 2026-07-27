@@ -368,6 +368,11 @@
     .finding p { margin-bottom: 0; color: #536076; font-size: .91rem; }
 
     .matrix td:not(:first-child), .matrix th:not(:first-child) { text-align: center; }
+    .matrix td:last-child, .matrix th:last-child {
+      min-width: 190px;
+      text-align: left;
+      white-space: normal;
+    }
 
     .pill {
       display: inline-flex;
@@ -379,10 +384,36 @@
       font-weight: 850;
     }
 
-    .allowed { color: #166534; background: var(--green-soft); }
-    .denied { color: #991b1b; background: var(--red-soft); }
-    .failed { color: #9a3412; background: var(--orange-soft); }
-    .observed { color: #1e40af; background: var(--blue-soft); }
+    .present { color: #1e40af; background: var(--blue-soft); }
+    .absent { color: #475569; background: #eef2f7; }
+    .passed { color: #166534; background: var(--green-soft); }
+    .protective { color: #5b21b6; background: var(--violet-soft); }
+    .tradeoff { color: #9a3412; background: var(--orange-soft); }
+    .failed { color: #991b1b; background: var(--red-soft); }
+
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px 10px;
+      align-items: center;
+      margin: 13px 0 8px;
+      color: var(--muted);
+      font-size: .62rem;
+      line-height: 1.25;
+    }
+
+    .legend span {
+      display: inline-flex;
+      gap: 6px;
+      align-items: center;
+    }
+
+    .legend .pill {
+      min-width: 58px;
+      padding: 3px 6px;
+      font-size: .57rem;
+      letter-spacing: .01em;
+    }
 
     .scope-note {
       margin-top: 15px;
@@ -846,7 +877,14 @@
         </article>
       </div>
 
-      <div class="table-wrap" style="margin-top:18px">
+      <div class="legend" aria-label="Table color legend">
+        <span><b class="pill present">Present</b> neutral observation</span>
+        <span><b class="pill absent">Absent</b> neutral absence</span>
+        <span><b class="pill passed">Passed</b> requirement satisfied</span>
+        <span><b class="pill failed">Failed</b> actual failure only</span>
+      </div>
+
+      <div class="table-wrap">
         <table class="matrix">
           <thead>
             <tr>
@@ -854,15 +892,52 @@
               <th>Skill</th>
               <th>Local MCP</th>
               <th>Isolated MCP</th>
+              <th>How to read it</th>
             </tr>
           </thead>
           <tbody>
-            <tr><td>Fresh Codex session</td><td><span class="pill observed">Yes</span></td><td><span class="pill observed">Yes</span></td><td><span class="pill observed">Yes</span></td></tr>
-            <tr><td>Assigned interface only</td><td><span class="pill allowed">Yes</span></td><td><span class="pill allowed">Yes</span></td><td><span class="pill allowed">Yes</span></td></tr>
-            <tr><td>Typed MCP result</td><td><span class="pill denied">No</span></td><td><span class="pill allowed">Yes</span></td><td><span class="pill allowed">Yes</span></td></tr>
-            <tr><td>Guardian review</td><td><span class="pill denied">No</span></td><td><span class="pill observed">Yes</span></td><td><span class="pill observed">Yes</span></td></tr>
-            <tr><td>Container isolation</td><td><span class="pill denied">No</span></td><td><span class="pill denied">No</span></td><td><span class="pill allowed">Yes</span></td></tr>
-            <tr><td>Correct output</td><td><span class="pill allowed">Yes</span></td><td><span class="pill allowed">Yes</span></td><td><span class="pill allowed">Yes</span></td></tr>
+            <tr>
+              <td>Fresh Codex session</td>
+              <td><span class="pill present">Present</span></td>
+              <td><span class="pill present">Present</span></td>
+              <td><span class="pill present">Present</span></td>
+              <td>Experimental control</td>
+            </tr>
+            <tr>
+              <td>Assigned interface only</td>
+              <td><span class="pill passed">Passed</span></td>
+              <td><span class="pill passed">Passed</span></td>
+              <td><span class="pill passed">Passed</span></td>
+              <td>Required protocol compliance</td>
+            </tr>
+            <tr>
+              <td>Typed MCP result</td>
+              <td><span class="pill absent">Absent</span></td>
+              <td><span class="pill present">Present</span></td>
+              <td><span class="pill present">Present</span></td>
+              <td>Architectural feature, not a success score</td>
+            </tr>
+            <tr>
+              <td>Guardian review</td>
+              <td><span class="pill absent">Not triggered</span></td>
+              <td><span class="pill tradeoff">Triggered</span></td>
+              <td><span class="pill tradeoff">Triggered</span></td>
+              <td>Automated control with token and latency overhead</td>
+            </tr>
+            <tr>
+              <td>Container isolation</td>
+              <td><span class="pill absent">Absent</span></td>
+              <td><span class="pill absent">Absent</span></td>
+              <td><span class="pill protective">Protective</span></td>
+              <td>Configured execution protection</td>
+            </tr>
+            <tr>
+              <td>Correct output</td>
+              <td><span class="pill passed">Passed</span></td>
+              <td><span class="pill passed">Passed</span></td>
+              <td><span class="pill passed">Passed</span></td>
+              <td>Required success criterion</td>
+            </tr>
           </tbody>
         </table>
       </div>
@@ -1002,7 +1077,7 @@
 
       <details class="glossary-panel">
         <summary>
-          <strong>Essential concepts — start here</strong>
+          <strong>Essential concepts - start here</strong>
           <small>The minimum vocabulary needed to follow the experiment.</small>
         </summary>
         <div class="grid glossary">
@@ -1135,7 +1210,7 @@
 
       <details class="glossary-panel">
         <summary>
-          <strong>Technical details — go deeper</strong>
+          <strong>Technical details - go deeper</strong>
           <small>Execution, isolation, accounting, timing, and evidence terms.</small>
         </summary>
         <div class="grid glossary">
@@ -1312,6 +1387,22 @@
     <section id="evidence">
       <p class="section-kicker">Source evidence</p>
       <h2>Trace every statement back to the run.</h2>
+      <div class="callout" style="margin-bottom:18px">
+        <span class="mark">i</span>
+        <div>
+          <strong>Why the isolated output has a different path</strong>
+          <p>
+            The Skill and local MCP configurations accept explicit host output
+            filenames. The isolated MCP tool accepts no path arguments: it always
+            writes to <span class="mono">/output/summary.json</span> inside the
+            container. Its dedicated host folder is mounted at
+            <span class="mono">/output</span>, so the file appears as
+            <span class="mono">03-isolated-output/summary.json</span>. This
+            difference reflects the restricted filesystem contract rather than
+            a different result format.
+          </p>
+        </div>
+      </div>
       <div class="grid grid-3">
         <a class="card" href="experiments/complete-ai-system-config/results/20260727-mac/04-set-000-comparison.json"><strong>Three-way comparison</strong><br><small>Metrics, deltas, and cautions</small></a>
         <a class="card" href="experiments/complete-ai-system-config/results/20260727-mac/00-environment.json"><strong>Environment metadata</strong><br><small>Codex, host, MCP, and container</small></a>
