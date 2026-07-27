@@ -4,7 +4,7 @@ This protocol makes Codex the model and agent under test.
 
 ## 1. Freeze the configuration
 
-Before the first pair, record:
+Before the first comparison set, record:
 
 - repository commit;
 - Codex surface, such as app, IDE extension, or CLI;
@@ -25,7 +25,7 @@ results:
 .venv/bin/pytest -q
 ```
 
-Both conditions must resolve to:
+All three conditions must resolve to:
 
 ```json
 {
@@ -41,25 +41,31 @@ For the Skill condition, make
 explicitly invoke that Skill in the controlled prompt. Codex must follow its
 declared script path and must not use the MCP server.
 
-For the MCP condition, register
+For the local MCP condition, register
 `experiments/execution-boundaries/mcp-local/server.py` as a stdio MCP server in
 the Codex environment. Start a fresh Codex session after configuration and
 verify that it exposes exactly one relevant tool named `summarize_orders`.
 Codex must use that MCP tool and must not run the Skill script through the
 terminal.
 
+For the isolated MCP condition, register the container server with the
+read-only input mount, dedicated writable output mount, disabled network,
+read-only root filesystem, non-root image user, 0.5 CPU, and 128 MiB memory.
+Its `summarize_orders` tool takes no arguments because `/input/orders.csv` and
+`/output/summary.json` are fixed inside the boundary.
+
 Record the actual Skill discovery method and MCP configuration in each run
 record. Codex configuration interfaces can change, so the record, rather than
 an assumed global setup command, is authoritative.
 
-## 4. Create a pair
+## 4. Create a comparison set
 
-Use two fresh sessions. Session A receives one condition and Session B receives
-the other. Alternate order:
+Use three fresh sessions, one for each condition. Rotate order:
 
 ```text
-even pair: Skill, then MCP
-odd pair:  MCP, then Skill
+set 0: Skill, local MCP, isolated MCP
+set 1: local MCP, isolated MCP, Skill
+set 2: isolated MCP, Skill, local MCP
 ```
 
 Do not discuss the other condition in the session. Do not reuse a thread,
@@ -70,7 +76,7 @@ continue from a summary, or preload a previous result.
 Replace only the three bracketed values in
 [`prompts/task.md`](prompts/task.md):
 
-- `[CONDITION]` with `Skill` or `MCP`;
+- `[CONDITION]` with `Skill`, `local MCP`, or `isolated MCP`;
 - `[INPUT_PATH]` with the absolute controlled CSV path;
 - `[OUTPUT_PATH]` with a new disposable absolute JSON path.
 

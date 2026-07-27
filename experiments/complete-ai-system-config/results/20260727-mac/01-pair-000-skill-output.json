@@ -1,0 +1,16 @@
+{
+  "order_count_by_category": {
+    "books": 3,
+    "electronics": 2,
+    "garden": 2,
+    "kitchen": 1
+  },
+  "revenue_by_category": {
+    "books": "69.00",
+    "electronics": "230.99",
+    "garden": "74.00",
+    "kitchen": "37.50"
+  },
+  "total_orders": 8,
+  "total_revenue": "411.49"
+}

@@ -8,7 +8,8 @@ model. Keep their result sets, labels, and interpretations separate.
 
 ## Primary Codex comparison
 
-For one pinned Codex configuration, compare Skill and MCP conditions on:
+For one pinned Codex configuration, compare Skill, local MCP, and isolated MCP
+conditions on:
 
 1. end-to-end task success;
 2. correct use of the designated action interface;
@@ -17,8 +18,8 @@ For one pinned Codex configuration, compare Skill and MCP conditions on:
 5. token consumption, only when exposed for the isolated session.
 
 The experimental unit is one fresh Codex session performing one condition.
-Pair Skill and MCP sessions by repetition and alternate which condition runs
-first.
+Group the three conditions into a comparison set and rotate their order across
+repetitions.
 
 ## Success criteria
 
@@ -37,9 +38,9 @@ a new run linked to the failed run.
 
 Use fresh sessions because conversation history is part of the model input.
 Record the Codex surface, model, reasoning setting, application or CLI version,
-repository commit, permission mode, condition, and position within the pair.
+repository commit, permission mode, condition, and position within the set.
 
-The repository contains artifacts for both conditions. This protocol is
+The repository contains artifacts for all three conditions. This protocol is
 behavioral isolation, not a claim of filesystem isolation. The operator assigns
 one interface and the transcript is reviewed for violations. A stronger future
 variant may use separate worktrees that expose only the assigned artifacts.
@@ -68,7 +69,7 @@ but not a token-efficiency claim.
 
 ## Repetition and analysis
 
-Use at least 10 paired repetitions for a pilot. Report the success count for
+Use at least 10 three-session comparison sets for a pilot. Report the success count for
 each condition and preserve every failed run. For elapsed time, report median,
 p95, minimum, and maximum with the number of observations. Treat first-use
 startup effects as observed data and label session position.

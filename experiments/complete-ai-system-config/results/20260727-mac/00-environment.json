@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "experiment": "complete-ai-system-config",
+  "result_set": "20260727-mac",
+  "repository_commit": "ac3bb354a3f37839bd2d9d68ae6732a2da1f0de2",
+  "repository_commit_timestamp": "2026-07-27T17:27:14+02:00",
+  "repository_commit_subject": "feat(experiments): complete ai system test with llm agent in the loop",
+  "baseline": {
+    "command": ".venv/bin/pytest -q",
+    "result": "18 passed",
+    "duration_seconds": 1.12
+  },
+  "environment": {
+    "codex_surface": "VS Code Codex extension",
+    "codex_version": "extension 26.721.41059; codex-cli 0.146.0-alpha.3.1",
+    "displayed_model": "GPT-5.6 Sol",
+    "reasoning_setting": "Light",
+    "permission_mode": "managed workspace-write",
+    "operating_system": "macOS 26.5.2 (build 25F84)",
+    "kernel": "Darwin 25.5.0",
+    "architecture": "arm64",
+    "python_version": "3.14.6",
+    "mcp_version": "1.28.1"
+  },
+  "mcp_configuration": {
+    "name": "ai-architecture-orders",
+    "enabled": true,
+    "transport": "stdio",
+    "command": "$REPOSITORY/.venv/bin/python",
+    "server": "$REPOSITORY/experiments/execution-boundaries/mcp-local/server.py"
+  },
+  "isolated_mcp_configuration": {
+    "name": "ai-architecture-orders-isolated",
+    "enabled": true,
+    "transport": "stdio over docker run",
+    "image": "orders-mcp-isolated",
+    "image_id": "sha256:836f2a783568c29680a917be6672abe320796d6874eb4a354e725bbedebd42fd",
+    "network": "none",
+    "root_filesystem": "read-only",
+    "container_user": 10001,
+    "cpu_limit": 0.5,
+    "memory_limit_mib": 128,
+    "input_mount": "read-only",
+    "output_mount": "dedicated writable result directory"
+  },
+  "notes": [
+    "Displayed model and reasoning setting were copied from the tested surface before the first run.",
+    "No model-mediated result had been collected when this manifest was created."
+  ]
+}

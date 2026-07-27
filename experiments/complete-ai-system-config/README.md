@@ -25,27 +25,34 @@ Fresh Codex session B
   -> registered summarize_orders MCP tool
   -> real local MCP server
   -> final answer
+
+Fresh Codex session C
+  -> same controlled task prompt
+  -> registered zero-argument summarize_orders MCP tool
+  -> narrowly mounted container MCP server
+  -> final answer
 ```
 
-The two sessions must use the same Codex surface, model, reasoning setting,
+The three sessions must use the same Codex surface, model, reasoning setting,
 repository revision, permissions, and input fixture. Separate fresh sessions
 prevent the first condition's tool result or instructions from leaking into
-the second.
+later conditions.
 
 ## What is controlled
 
 - The exact task prompt is stored in [`prompts/task.md`](prompts/task.md).
-- Both paths call the same deterministic summarization implementation.
-- Both receive the same explicit input and disposable output paths.
+- All paths call the same deterministic summarization implementation.
+- Each receives the controlled input and disposable output path appropriate to
+  its boundary.
 - The expected result is fixed before the run.
-- Neither condition may fall back to the other condition's interface.
-- Condition order alternates across paired repetitions.
+- No condition may fall back to another condition's interface.
+- Condition order rotates across three-session comparison sets.
 - Every run records its environment and any protocol deviation.
 
 The Skill path uses the existing
 [`skill/SKILL.md`](../execution-boundaries/skill/SKILL.md) and its declared
-script. The MCP path uses the existing local `summarize_orders` MCP server.
-The agent must not calculate the CSV directly in either condition.
+script. The MCP paths use the existing local and isolated `summarize_orders`
+servers. The agent must not calculate the CSV directly in any condition.
 
 ## Reproducible Codex protocol
 
@@ -58,7 +65,8 @@ complete only fields that are observable. Do not estimate missing measurements.
 
 ## Measurements
 
-The primary Codex experiment records:
+The primary Codex experiment records these metrics for Skill, local MCP, and
+isolated MCP:
 
 - task success and final-answer correctness;
 - action selected and tool-call arguments;

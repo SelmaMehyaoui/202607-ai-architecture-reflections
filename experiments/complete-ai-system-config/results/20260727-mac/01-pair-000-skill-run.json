@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "run_id": "20260727-mac-pair-000-skill",
+  "pair_index": 0,
+  "position_in_pair": 1,
+  "condition": "skill",
+  "started_at": "2026-07-27T15:43:44.575Z",
+  "completed_at": "2026-07-27T15:44:01.243Z",
+  "repository_commit": "ac3bb354a3f37839bd2d9d68ae6732a2da1f0de2",
+  "environment_manifest": "00-environment.json",
+  "configuration": {
+    "skill_discovery_method": "Explicit repository-relative SKILL.md path in controlled prompt",
+    "mcp_registration_method": null
+  },
+  "paths": {
+    "input": "experiments/execution-boundaries/common/input/orders.csv",
+    "output": "01-pair-000-skill-output.json"
+  },
+  "observations": {
+    "assigned_interface_used": true,
+    "action_name": "skill/scripts/summarize_orders.py",
+    "action_arguments": {
+      "input": "experiments/execution-boundaries/common/input/orders.csv",
+      "output": "experiments/complete-ai-system-config/results/20260727-mac/01-pair-000-skill-output.json"
+    },
+    "action_call_count": 1,
+    "agent_tool_call_count": 3,
+    "model_turn_count": 1,
+    "model_inference_count": 4,
+    "permission_prompt_count": 0,
+    "output_sha256": "28f67fe80e36fd7884b7fe9676fe889e2494b3df3833637298a0e7c5576981ad",
+    "total_orders": 8,
+    "total_revenue": "411.49",
+    "final_answer_correct": true,
+    "wall_time_ms": 16704,
+    "tool_execution_ms": null,
+    "business_logic_ns": 960292,
+    "token_count": 75416,
+    "token_breakdown": {
+      "input_tokens": 74914,
+      "cached_input_tokens": 53504,
+      "output_tokens": 502,
+      "reasoning_output_tokens": 31
+    },
+    "token_measurement_source": "Final token_count event in the local Codex rollout"
+  },
+  "success": true,
+  "error": null,
+  "protocol_deviations": [],
+  "artifacts": {
+    "prompt": "01-pair-000-skill-prompt.txt",
+    "transcript": "01-pair-000-skill-transcript.md",
+    "output": "01-pair-000-skill-output.json"
+  }
+}

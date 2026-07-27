@@ -1,0 +1,18 @@
+You are participating in a controlled architecture experiment.
+
+Assigned interface: MCP
+
+Summarize the order CSV at:
+$REPOSITORY/experiments/execution-boundaries/common/input/orders.csv
+
+Write the deterministic JSON summary to:
+$REPOSITORY/experiments/complete-ai-system-config/results/20260727-mac/02-pair-000-mcp-output.json
+
+Use exactly the assigned interface:
+
+- Invoke the registered `summarize_orders` MCP tool.
+- Do not run the Skill script or calculate the CSV directly.
+
+Do not use another execution path and do not calculate the totals yourself.
+After the action succeeds, report the total number of orders and total revenue
+concisely.

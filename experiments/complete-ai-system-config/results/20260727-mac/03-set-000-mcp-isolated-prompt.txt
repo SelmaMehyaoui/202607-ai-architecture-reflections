@@ -1,0 +1,21 @@
+You are participating in a controlled architecture experiment.
+
+Assigned interface: isolated MCP
+
+Summarize the controlled order CSV using the registered
+`ai-architecture-orders-isolated` MCP server.
+
+That server has fixed container paths:
+
+- read-only input: `/input/orders.csv`
+- writable output: `/output/summary.json`
+
+The host publication output will appear at:
+$REPOSITORY/experiments/complete-ai-system-config/results/20260727-mac/03-isolated-output/summary.json
+
+Invoke exactly the zero-argument `summarize_orders` tool exposed by
+`ai-architecture-orders-isolated`.
+
+Do not use the local MCP server, the Skill script, a terminal command, or direct
+calculation. After the MCP action succeeds, report the total number of orders
+and total revenue concisely.

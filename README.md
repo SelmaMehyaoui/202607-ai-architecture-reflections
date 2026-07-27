@@ -45,9 +45,10 @@ direct-context and MCP-assisted conditions.
 
 The third experiment,
 [`experiments/complete-ai-system-config`](experiments/complete-ai-system-config/README.md),
-uses Codex as the shared model and agent while comparing two complete
-configurations: a Skill plus its declared script, and an MCP client plus a local
-MCP server. Fresh sessions, a frozen prompt, explicit run records, and honest
+uses Codex as the shared model and agent while comparing three complete
+configurations: a Skill plus its declared script, a local MCP server, and a
+narrowly mounted container MCP server. Fresh sessions, a frozen prompt,
+explicit run records, and honest
 handling of unavailable token telemetry make the comparison reproducible. A
 separate API-driven harness is retained for later local and remote model runs.
 

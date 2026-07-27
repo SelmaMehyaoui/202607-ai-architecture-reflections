@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "run_id": "20260727-mac-pair-000-mcp",
+  "pair_index": 0,
+  "position_in_pair": 2,
+  "condition": "mcp",
+  "started_at": "2026-07-27T15:51:39.548Z",
+  "completed_at": "2026-07-27T15:51:53.031Z",
+  "repository_commit": "ac3bb354a3f37839bd2d9d68ae6732a2da1f0de2",
+  "environment_manifest": "00-environment.json",
+  "configuration": {
+    "skill_discovery_method": null,
+    "mcp_registration_method": "Global stdio server named ai-architecture-orders"
+  },
+  "paths": {
+    "input": "experiments/execution-boundaries/common/input/orders.csv",
+    "output": "02-pair-000-mcp-output.json"
+  },
+  "observations": {
+    "assigned_interface_used": true,
+    "action_name": "summarize_orders",
+    "action_arguments": {
+      "input_path": "experiments/execution-boundaries/common/input/orders.csv",
+      "output_path": "experiments/complete-ai-system-config/results/20260727-mac/02-pair-000-mcp-output.json"
+    },
+    "action_call_count": 1,
+    "agent_tool_call_count": 2,
+    "model_turn_count": 1,
+    "main_model_inference_count": 3,
+    "guardian_model_inference_count": 1,
+    "permission_prompt_count": 0,
+    "guardian_review_count": 1,
+    "output_sha256": "28f67fe80e36fd7884b7fe9676fe889e2494b3df3833637298a0e7c5576981ad",
+    "total_orders": 8,
+    "total_revenue": "411.49",
+    "final_answer_correct": true,
+    "wall_time_ms": 13564,
+    "tool_execution_ms": 1.262334,
+    "action_round_trip_ms": 3900,
+    "business_logic_ns": 720083,
+    "server_duration_ns": 1262334,
+    "token_count": 66008,
+    "token_breakdown": {
+      "main_agent": {
+        "input_tokens": 60810,
+        "cached_input_tokens": 37376,
+        "output_tokens": 210,
+        "reasoning_output_tokens": 15,
+        "total_tokens": 61020
+      },
+      "guardian": {
+        "input_tokens": 4898,
+        "cached_input_tokens": 3584,
+        "output_tokens": 90,
+        "reasoning_output_tokens": 72,
+        "total_tokens": 4988
+      },
+      "complete_system_total_tokens": 66008
+    },
+    "token_measurement_source": "Final token_count events in the main and guardian Codex rollouts"
+  },
+  "success": true,
+  "error": null,
+  "protocol_deviations": [],
+  "artifacts": {
+    "prompt": "02-pair-000-mcp-prompt.txt",
+    "transcript": "02-pair-000-mcp-transcript.md",
+    "output": "02-pair-000-mcp-output.json"
+  }
+}

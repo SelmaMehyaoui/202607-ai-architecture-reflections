@@ -1,0 +1,75 @@
+{
+  "schema_version": 1,
+  "comparison_set_index": 0,
+  "sample_size_per_condition": 1,
+  "all_successful": true,
+  "outputs_identical": true,
+  "output_sha256": "28f67fe80e36fd7884b7fe9676fe889e2494b3df3833637298a0e7c5576981ad",
+  "skill": {
+    "wall_time_ms": 16704,
+    "time_to_first_token_ms": 2073,
+    "main_agent_tokens": 75416,
+    "supporting_agent_tokens": 0,
+    "complete_system_tokens": 75416,
+    "business_logic_ns": 960292
+  },
+  "mcp_local": {
+    "wall_time_ms": 13564,
+    "time_to_first_token_ms": 2391,
+    "main_agent_tokens": 61020,
+    "supporting_agent_tokens": 4988,
+    "complete_system_tokens": 66008,
+    "business_logic_ns": 720083,
+    "server_duration_ns": 1262334,
+    "action_round_trip_ms": 3900
+  },
+  "mcp_isolated": {
+    "wall_time_ms": 16595,
+    "time_to_first_token_ms": 3829,
+    "main_agent_tokens": 57958,
+    "supporting_agent_tokens": 4770,
+    "complete_system_tokens": 62728,
+    "business_logic_ns": 5395418,
+    "server_duration_ns": 7420157,
+    "tool_execution_ms": 27.72075,
+    "action_round_trip_ms": 6350
+  },
+  "mcp_minus_skill": {
+    "wall_time_ms": -3140,
+    "wall_time_percent": -18.798,
+    "time_to_first_token_ms": 318,
+    "time_to_first_token_percent": 15.34,
+    "main_agent_tokens": -14396,
+    "main_agent_tokens_percent": -19.089,
+    "complete_system_tokens": -9408,
+    "complete_system_tokens_percent": -12.475
+  },
+  "mcp_isolated_minus_skill": {
+    "wall_time_ms": -109,
+    "wall_time_percent": -0.653,
+    "time_to_first_token_ms": 1756,
+    "time_to_first_token_percent": 84.708,
+    "main_agent_tokens": -17458,
+    "main_agent_tokens_percent": -23.149,
+    "complete_system_tokens": -12688,
+    "complete_system_tokens_percent": -16.824
+  },
+  "mcp_isolated_minus_mcp_local": {
+    "wall_time_ms": 3031,
+    "wall_time_percent": 22.346,
+    "time_to_first_token_ms": 1438,
+    "time_to_first_token_percent": 60.142,
+    "main_agent_tokens": -3062,
+    "main_agent_tokens_percent": -5.018,
+    "complete_system_tokens": -3280,
+    "complete_system_tokens_percent": -4.969
+  },
+  "interpretation": [
+    "This is one three-condition observation, not evidence of a stable performance difference.",
+    "Local and isolated MCP complete-system totals include automatic guardian reviews of 4988 and 4770 tokens respectively.",
+    "MCP action round trips include guardian review time and are not MCP server execution times.",
+    "The Skill trace read SKILL.md and the output through terminal tools; both MCP traces used tool search and structured results.",
+    "The isolated condition includes container execution, constrained mounts, and a fixed zero-argument tool contract.",
+    "Process startup, caching, schemas, and supporting-agent activity differ among the complete configurations."
+  ]
+}

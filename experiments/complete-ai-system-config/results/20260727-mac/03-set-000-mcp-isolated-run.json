@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "run_id": "20260727-mac-set-000-mcp-isolated",
+  "comparison_set_index": 0,
+  "position_in_set": 3,
+  "condition": "mcp-isolated",
+  "started_at": "2026-07-27T16:05:52.323Z",
+  "completed_at": "2026-07-27T16:06:08.851Z",
+  "repository_commit": "ac3bb354a3f37839bd2d9d68ae6732a2da1f0de2",
+  "environment_manifest": "00-environment.json",
+  "configuration": {
+    "skill_discovery_method": null,
+    "mcp_registration_method": "Global stdio server named ai-architecture-orders-isolated wrapping a constrained docker run"
+  },
+  "paths": {
+    "container_input": "/input/orders.csv",
+    "container_output": "/output/summary.json",
+    "host_output": "03-isolated-output/summary.json"
+  },
+  "observations": {
+    "assigned_interface_used": true,
+    "action_name": "ai-architecture-orders-isolated/summarize_orders",
+    "action_arguments": {},
+    "action_call_count": 1,
+    "agent_tool_call_count": 2,
+    "model_turn_count": 1,
+    "main_model_inference_count": 3,
+    "guardian_model_inference_count": 1,
+    "permission_prompt_count": 0,
+    "guardian_review_count": 1,
+    "output_sha256": "28f67fe80e36fd7884b7fe9676fe889e2494b3df3833637298a0e7c5576981ad",
+    "total_orders": 8,
+    "total_revenue": "411.49",
+    "final_answer_correct": true,
+    "wall_time_ms": 16595,
+    "time_to_first_token_ms": 3829,
+    "tool_execution_ms": 27.72075,
+    "action_round_trip_ms": 6350,
+    "business_logic_ns": 5395418,
+    "server_duration_ns": 7420157,
+    "token_count": 62728,
+    "token_breakdown": {
+      "main_agent": {
+        "input_tokens": 57842,
+        "cached_input_tokens": 36352,
+        "output_tokens": 116,
+        "reasoning_output_tokens": 15,
+        "total_tokens": 57958
+      },
+      "guardian": {
+        "input_tokens": 4693,
+        "cached_input_tokens": 3584,
+        "output_tokens": 77,
+        "reasoning_output_tokens": 59,
+        "total_tokens": 4770
+      },
+      "complete_system_total_tokens": 62728
+    },
+    "token_measurement_source": "Final token_count events in the main and guardian Codex rollouts"
+  },
+  "success": true,
+  "error": null,
+  "protocol_deviations": [],
+  "artifacts": {
+    "prompt": "03-set-000-mcp-isolated-prompt.txt",
+    "transcript": "03-set-000-mcp-isolated-transcript.md",
+    "output": "03-isolated-output/summary.json"
+  }
+}
