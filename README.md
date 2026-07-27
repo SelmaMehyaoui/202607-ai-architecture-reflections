@@ -52,6 +52,14 @@ explicit run records, and honest
 handling of unavailable token telemetry make the comparison reproducible. A
 separate API-driven harness is retained for later local and remote model runs.
 
+The controlled deterministic task is an order-summary calculation. Each
+configuration must read the same synthetic CSV, validate the required
+`order_id`, `category`, `quantity`, and `unit_price` fields, calculate revenue
+as `quantity × unit_price` for every row, and write the same JSON structure:
+total order count and revenue, plus order count and revenue by category. For the
+current fixture, the frozen expected result contains 8 orders and total revenue
+of `411.49`.
+
 An editable multi-page
 [`Draw.io architecture diagram`](docs/ai-architecture-experiments.drawio)
 summarizes the experiments, their execution paths, trust boundaries,
